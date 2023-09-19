@@ -79,25 +79,33 @@ public class DataReader : MonoBehaviour
 
     // TODO
     public Pokemon GetPokemonById(int id)
-        => throw new NotImplementedException();
+        => GetPokemons().First(i => i.id == id);
 
     // TODO
     public IEnumerable<Pokemon> PokemonByType(string type)
-        => throw new NotImplementedException();
+        => GetPokemons().Where(i => i.type.Contains(type));
 
     // TODO
     public List<int> GetTopPokemonByBasePower(int count)
-        => throw new NotImplementedException();
+        => GetPokemons()
+        .OrderByDescending(i => i.statbase.BasePower)
+        .Select(i => i.id)
+        .Take(count)
+        .ToList();
 
     // TODO
     public List<int> GetDownPokemonByBasePower(int count)
-        => throw new NotImplementedException();
+        => GetPokemons()
+        .OrderBy(i => i.statbase.BasePower)
+        .Select(i => i.id)
+        .Take(count)
+        .ToList();
 
     // TODO
     public int GetPokemonPowerById(int id)
-        => throw new NotImplementedException();
+        => GetPokemonById(id).statbase.BasePower;
 
     public IEnumerable<(int id, int power)> DecoratePokemonIdWithPower(IEnumerable<int> ids)
-        => throw new NotImplementedException();
+        => ids.Select(i => (i, GetPokemonPowerById(i)));
 
 }
