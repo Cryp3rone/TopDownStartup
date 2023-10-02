@@ -9,13 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ba7d8d4bbbbe59b42b40573f1d296cda, type: 3}
-  m_Name: SpawnerData
+  m_Script: {fileID: 11500000, guid: 6a4ac91d47b3cee429dfe9f3cadaedd9, type: 3}
+  m_Name: EnemiesReference
   m_EditorClassIdentifier: 
-  waves:
-  - waveEnemyPercent:
-      melee: 0
-      distance: 0
-      boss: 0
-    enemyCount: 10
-  enemiesAlive: []
+  _instances:
+  - {fileID: 0}

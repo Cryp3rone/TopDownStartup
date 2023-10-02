@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,16 +7,13 @@ namespace Game
 {
     public class GameManager : MonoBehaviour
     {
-        // Start is called before the first frame update
-        void Start()
-        {
+        [SerializeField] private EnemiesReference enemiesReference;
+        [SerializeField] private SpawnerManager spawnerManager;
         
-        }
-
-        // Update is called once per frame
-        void Update()
+        private void Awake()
         {
-        
+            enemiesReference.Init();
+            spawnerManager.StartSystem();
         }
     }
 }

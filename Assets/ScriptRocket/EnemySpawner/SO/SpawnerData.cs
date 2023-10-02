@@ -9,6 +9,5 @@ namespace Game
     {
         public List<Wave> waves = new List<Wave>();
 
-        public List<Enemy> enemiesAlive = new List<Enemy>();
     }
 }
