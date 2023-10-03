@@ -6,7 +6,7 @@ using UnityEngine.Playables;
 
 public class bullet : MonoBehaviour
 {
-    [SerializeField] float _speed = 50f;
+    [SerializeField] float _speed;
 
     private Vector3 direction;
     private int dmg;
@@ -18,18 +18,17 @@ public class bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        var i = collision.GetComponentInParent<HealthProxy>();
-        i?.Damage(dmg);
 
-        /*HashSet<Health> hh = new HashSet<Health>();
-
-        if(hh.Add(i._target) == false)
+        if(collision.gameObject.tag == "Enemy")
         {
-            //skip
-        }*/
+            Debug.Log("dmg enemy");
+            var i = collision.GetComponentInParent<HealthProxy>();
+            i?.Damage(dmg);
+            gameObject.SetActive(false);
+        }
 
         if(collision.gameObject.name == "Wall")
-            Destroy(gameObject);
+            gameObject.SetActive(false);   
     }
 
     private void OnBecameVisible()

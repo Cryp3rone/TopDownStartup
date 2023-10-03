@@ -15,8 +15,6 @@ namespace Game
 
         private Weapon playerWeapon;
 
-        //_pool = new ObjectPool<GameObject>(createFunc: () => new GameObject("PooledObject"), actionOnGet: (obj) => obj.SetActive(true), actionOnRelease: (obj) => obj.SetActive(false), actionOnDestroy: (obj) => Destroy(obj), collectionChecks: false, defaultCapacity: 10, maxPoolSize: 10);
-
         public enum WEAPON_TYPE
         {
             PISTOL,
@@ -37,16 +35,13 @@ namespace Game
                 tmp.gameObject.SetActive(false);
                 pooledObjects.Add(tmp);
             }
-
-        }
-
-        private void OnDestroy()
-        {
-            playerWeapon.OnShoot -= ShowPooledObject;
         }
 
         public void SetWeapon(Weapon weapon)
         {
+            if(playerWeapon != null) 
+                playerWeapon.OnShoot -= ShowPooledObject;
+
             playerWeapon = weapon;
             playerWeapon.OnShoot += ShowPooledObject;
         }
@@ -59,7 +54,6 @@ namespace Game
                     return pooledObjects[i];
             }
             return null;
-            
         }
 
         public List<bullet> GetMultiplePooledObject(int magazine, int nbToAdd)
@@ -86,11 +80,11 @@ namespace Game
 
                 if (bullets != null)
                 {
-                    Vector3 dir = e.shootDirection - new Vector3(2f,2f,0);
+                    Vector3 dir = e.shootDirection - new Vector3(2f,2f,0).normalized;
                     foreach (bullet bulletToShoot in bullets)
                     {
                         bulletToShoot.SetDirectionAndDmg(dir, e.dmg);
-                        dir += new Vector3(2f, 2f, 0);
+                        dir += new Vector3(2f, 2f, 0).normalized;
                         // Set  position
                         bulletToShoot.transform.position = e.spawnPoint.transform.position;
                         // Set rotation
@@ -104,7 +98,7 @@ namespace Game
 
                 if (bullet != null)
                 {
-                    bullet.SetDirectionAndDmg(e.shootDirection, e.dmg);
+                    bullet.SetDirectionAndDmg(e.shootDirection.normalized, e.dmg);
                     // Set  position
                     bullet.transform.position = e.spawnPoint.transform.position;
                     // Set rotation

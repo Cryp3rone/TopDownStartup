@@ -28,6 +28,7 @@ public class Health : MonoBehaviour, IHealth
 
     public void Damage(int amount)
     {
+        Debug.Log("dmg");
         Assert.IsTrue(amount >= 0);
         if (IsDead) return;
 

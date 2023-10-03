@@ -21,6 +21,7 @@ namespace Game
         [SerializeField] private WEAPON_TYPE weaponType;
         [SerializeField] private Transform aimTransform;
         [SerializeField] private GameObject spawnPoint;
+        [SerializeField] private SpriteRenderer sprite;
         [SerializeField] private int _dmg;
         [SerializeField] private int _magazine;
 
@@ -28,7 +29,7 @@ namespace Game
 
         private void Start()
         {
-            munition = PlayerMunition.SharedInstance;
+            munition = SharedInstance;
 
             munition.SetWeapon(this);
         }
@@ -47,6 +48,11 @@ namespace Game
             Vector3 aimDirection = (mousePosition - transform.position).normalized;
             float angle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
 
+            if (angle > 90 || angle < -90)
+                sprite.flipY = true;
+            else
+                sprite.flipY = false;
+
             aimTransform.eulerAngles = new Vector3(0, 0, angle);
         }
 
@@ -63,7 +69,7 @@ namespace Game
             {
                 OnShoot?.Invoke(this, new OnShootEvent
                 {
-                    shootDirection = GetMousePosition(),
+                    shootDirection = (GetMousePosition() - transform.position).normalized,
                     spawnPoint = spawnPoint,
                     weaponType = weaponType,
                     dmg = _dmg,
