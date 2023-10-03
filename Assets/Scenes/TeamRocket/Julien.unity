@@ -60387,7 +60387,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!43 &1332509043
+--- !u!43 &1436620860
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -60666,8 +60666,8 @@ MonoBehaviour:
   bossPrefab: {fileID: 8821214757451762173, guid: c1209d8799887f6449d259e224051e09, type: 3}
   spawnerData: {fileID: 11400000, guid: 106a0a6357d43cf44b8f3c4a7bf00b6f, type: 2}
   timeBtwWaves: 4
-  spawnMinInterval: 0.5
-  spawnMaxInterval: 1
+  spawnMinInterval: 1.5
+  spawnMaxInterval: 2
   minDistanceFromPlayer: 2
   spawnParent: {fileID: 1725448203}
   xMin: 20

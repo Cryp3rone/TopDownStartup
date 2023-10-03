@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   waves:
   - waveEnemyPercent:
-      melee: 50
+      melee: 100
       distance: 25
-      boss: 25
+      boss: 4
     enemyCount: 5
   - waveEnemyPercent:
       melee: 50
@@ -29,12 +29,12 @@ MonoBehaviour:
       boss: 25
     enemyCount: 15
   - waveEnemyPercent:
-      melee: 50
-      distance: 25
-      boss: 25
+      melee: 89
+      distance: 80
+      boss: 4
     enemyCount: 22
   - waveEnemyPercent:
-      melee: 50
-      distance: 25
-      boss: 25
+      melee: 92
+      distance: 81
+      boss: 6
     enemyCount: 26

@@ -54,14 +54,6 @@ namespace Game
             _bossPool = new EnemyPool(bossPrefab);
         }
 
-        [Button]
-        public void KillRandomEnemy()
-        {
-            var randomEnemy = Random.Range(0, enemiesReference.Instances.Count);
-            //Need to know in which pool is the go
-            _meleePool.Pool.Release(enemiesReference.Instances[randomEnemy].gameObject);
-        }
-
         public void StartSystem()
         {
             if (spawnerData.waves.Count == 0)
@@ -93,17 +85,11 @@ namespace Game
             }
             
             //Weighted spawn
-            GameObject go = _meleePool.Pool.Get();
-            go.transform.position = pos;
-            Health health = go.GetComponent<Health>();
-            health.SetEntityType(EntityType.EnemyMelee);
-            health.OnDie += EnemyDie;
-
+            SpawnEnemy(ChooseEnemyWithWeight(), pos);
+            
             _spawnedEnemies++;
-
-            //Should be when enemies are killed
+            
             float randomTime = Random.Range(spawnMinInterval, spawnMaxInterval);
-            Debug.Log(randomTime);
             StartCoroutine(WaitRandomTime(randomTime));
 
             IEnumerator WaitRandomTime(float rt)
@@ -171,14 +157,65 @@ namespace Game
                     _meleePool.Pool.Release(go);
                     break;
                 case EntityType.EnemyDistance:
-                    _meleePool.Pool.Release(go);
+                    _distancePool.Pool.Release(go);
                     break;
                 case EntityType.EnemyBoss:
-                    _meleePool.Pool.Release(go);
+                    _bossPool.Pool.Release(go);
                     break;
             }
         }
+
+        EntityType ChooseEnemyWithWeight()
+        {
+            var wavePercent = _currentWave.waveEnemyPercent;
+            var enemyTable = new int[3];
+            enemyTable[0] = wavePercent.melee;
+            enemyTable[1] = wavePercent.distance;
+            enemyTable[2] = wavePercent.boss;
+            var totalWeight = enemyTable[0] + enemyTable[1] + enemyTable[2];
+            var enemyRandomNumber = Random.Range(0, totalWeight);
+  
+            
+            // 3 because we have 3 different enemy
+            for (int i = 0; i < enemyTable.Length; i++)
+            {
+                if (enemyRandomNumber <= enemyTable[i])
+                {
+                    switch (i)
+                    {
+                        case 0:
+                            return EntityType.EnemyMelee;
+                        case 1:
+                            return EntityType.EnemyDistance;
+                        case 2:
+                            return EntityType.EnemyBoss;
+                    }
+                }
+                enemyRandomNumber -= enemyTable[i];
+            }
+            return EntityType.EnemyMelee;
+        }
+
+        void SpawnEnemy(EntityType type, Vector2 pos)
+        {
+            GameObject go = null;
+            switch (type)
+            {
+                case EntityType.EnemyMelee: 
+                    go = _meleePool.Pool.Get();
+                    break;
+                case EntityType.EnemyDistance:
+                    go = _distancePool.Pool.Get();
+                    break;
+                case EntityType.EnemyBoss:
+                    go = _bossPool.Pool.Get();
+                    break;
+            }
+            
+            go.transform.position = pos;
+            Health health = go.GetComponent<Health>();
+            health.SetEntityType(type);
+            health.OnDie += EnemyDie;
+        }
     }
-
-
 }
