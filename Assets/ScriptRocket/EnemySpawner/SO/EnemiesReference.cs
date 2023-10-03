@@ -8,14 +8,7 @@ namespace Game
     {
         public void Init()
         {
-            _instances.Clear();
+            ClearList();
         }
-
-        // Testing if the references are available
-        /*[Button]
-        public void AccessFirstEnemy()
-        {
-            Debug.Log(_instances[0].name);
-        }*/
     }
 }

@@ -17,4 +17,24 @@ MonoBehaviour:
       melee: 50
       distance: 25
       boss: 25
-    enemyCount: 20
+    enemyCount: 5
+  - waveEnemyPercent:
+      melee: 50
+      distance: 25
+      boss: 25
+    enemyCount: 9
+  - waveEnemyPercent:
+      melee: 50
+      distance: 25
+      boss: 25
+    enemyCount: 15
+  - waveEnemyPercent:
+      melee: 50
+      distance: 25
+      boss: 25
+    enemyCount: 22
+  - waveEnemyPercent:
+      melee: 50
+      distance: 25
+      boss: 25
+    enemyCount: 26

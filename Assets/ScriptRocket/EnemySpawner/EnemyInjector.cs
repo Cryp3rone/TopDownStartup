@@ -8,22 +8,22 @@ namespace Game
         [SerializeField] Entity _e;
         [SerializeField] EnemiesReference _ref;
 
-        ISet<Entity> RealRef => _ref;
-
-        public IReadOnlyList<int> T { get => t; }
-
-        List<int> t;
+        ISet<Entity> RealRefSet => _ref;
+        IRemove<Entity> RealRefRemove => _ref;
 
         void Awake()
         {
-            //_ref.Set(_e);
-            RealRef.Set(_e);
+            SetRef();
         }
 
-        private void OnDestroy()
+        public void SetRef()
         {
-            //Iset remove reference when enemy is killed
+            RealRefSet.Set(_e);
+        }
 
+        public void RemoveRef()
+        {
+            RealRefRemove.Remove(_e);
         }
     }
 }
