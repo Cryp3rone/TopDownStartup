@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using NaughtyAttributes;
+using UnityEditor;
 using Random = UnityEngine.Random;
 
 namespace Game
@@ -53,22 +54,10 @@ namespace Game
             _bossPool = new EnemyPool(bossPrefab);
         }
 
-        /*[Button]
-        public void DebugMeleePool()
-        {
-            Debug.Log(_meleePool.Pool.CountAll);
-        }
-
-        [Button]
-        public void CreateMelee()
-        {
-            GameObject go = _meleePool.Pool.Get();
-        }*/
-
         [Button]
         public void KillRandomEnemy()
         {
-            var randomEnemy = Random.Range(0, enemiesReference.Instances.Count - 1);
+            var randomEnemy = Random.Range(0, enemiesReference.Instances.Count);
             //Need to know in which pool is the go
             _meleePool.Pool.Release(enemiesReference.Instances[randomEnemy].gameObject);
         }
@@ -104,9 +93,12 @@ namespace Game
             }
             
             //Weighted spawn
-            GameObject go = Instantiate(_meleePool.Pool.Get(), pos, Quaternion.identity);
-            go.transform.parent = spawnParent.transform;
-            
+            GameObject go = _meleePool.Pool.Get();
+            go.transform.position = pos;
+            Health health = go.GetComponent<Health>();
+            health.SetEntityType(EntityType.EnemyMelee);
+            health.OnDie += EnemyDie;
+
             _spawnedEnemies++;
 
             //Should be when enemies are killed
@@ -169,6 +161,22 @@ namespace Game
         {
             Vector2 playerPos = playerReference.Instance.transform.position;
             return Vector2.Distance(pos, playerPos) < minDistanceFromPlayer;
+        }
+        
+        void EnemyDie(GameObject go, EntityType type)
+        {
+            switch (type)
+            {
+                case EntityType.EnemyMelee:
+                    _meleePool.Pool.Release(go);
+                    break;
+                case EntityType.EnemyDistance:
+                    _meleePool.Pool.Release(go);
+                    break;
+                case EntityType.EnemyBoss:
+                    _meleePool.Pool.Release(go);
+                    break;
+            }
         }
     }
 

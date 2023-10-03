@@ -9,6 +9,7 @@ using UnityEngine.Assertions;
 public class Health : MonoBehaviour, IHealth
 {
     [SerializeField] int _maxHealth;
+    private EntityType _entityType;
 
     /// <summary>
     /// coucou
@@ -23,7 +24,7 @@ public class Health : MonoBehaviour, IHealth
 
     public event Action<int> OnDamage;
     public event Action<int> OnRegen;
-    public event Action OnDie;
+    public event Action<GameObject, EntityType> OnDie;
 
     public void Damage(int amount)
     {
@@ -63,6 +64,17 @@ public class Health : MonoBehaviour, IHealth
     void InternalDie()
     {
         if (!IsDead) return;
-        OnDie?.Invoke();
+        OnDie?.Invoke(this.gameObject, _entityType);
+    }
+
+    [Button]
+    public void Die()
+    {
+        OnDie?.Invoke(this.gameObject, _entityType);
+    }
+
+    public void SetEntityType(EntityType type)
+    {
+        _entityType = type;
     }
 }

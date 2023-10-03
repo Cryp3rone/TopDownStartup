@@ -30,7 +30,7 @@ namespace Game
         GameObject CreatePooledItem()
         {
             //Creating the enemy
-            GameObject go = _prefab;
+            GameObject go = Object.Instantiate(_prefab);
             return go;
         }
     
@@ -38,14 +38,14 @@ namespace Game
         void OnReturnedToPool(GameObject go)
         {
             //Deactivate object
-            go.gameObject.GetComponent<PoolFunction>().Deactivate();
+            go.gameObject.GetComponent<EnemyInjector>().Deactivate();
         }
     
         // Called when an item is taken from the pool using Get
         void OnTakeFromPool(GameObject go)
         {
             //Activate object
-            go.gameObject.GetComponent<PoolFunction>().Activate();
+            go.gameObject.GetComponent<EnemyInjector>().Activate();
         }
     
         // If the pool capacity is reached then any items returned will be destroyed.
@@ -53,7 +53,7 @@ namespace Game
         void OnDestroyPoolObject(GameObject go)
         {
             //Destroy Object
-            go.gameObject.GetComponent<PoolFunction>().Destroy();
+            go.gameObject.GetComponent<EnemyInjector>().Destroy();
         }
         
     }
