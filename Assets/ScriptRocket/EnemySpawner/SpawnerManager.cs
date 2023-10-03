@@ -43,7 +43,6 @@ namespace Game
         private byte _waveIndex = 0;
         private Wave _currentWave;
         private int _spawnedEnemies;
-        
 
         private void Awake()
         {
