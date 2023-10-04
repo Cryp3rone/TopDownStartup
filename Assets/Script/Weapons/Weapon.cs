@@ -13,7 +13,6 @@ namespace Game
         {
             public Vector3 shootDirection;
             public GameObject spawnPoint;
-            public WEAPON_TYPE weaponType;
             public int dmg;
             public int magazine;
         }
@@ -31,7 +30,8 @@ namespace Game
         {
             munition = SharedInstance;
 
-            munition.SetWeapon(this);
+            OnShoot = null;
+            munition.SetWeapon(this, weaponType);
         }
 
         // Update is called once per frame
@@ -69,9 +69,8 @@ namespace Game
             {
                 OnShoot?.Invoke(this, new OnShootEvent
                 {
-                    shootDirection = (GetMousePosition() - transform.position).normalized,
+                    shootDirection = (GetMousePosition() - transform.position),
                     spawnPoint = spawnPoint,
-                    weaponType = weaponType,
                     dmg = _dmg,
                     magazine = _magazine,
                 });

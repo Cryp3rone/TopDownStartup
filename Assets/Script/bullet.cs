@@ -18,11 +18,9 @@ public class bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-
-        if(collision.gameObject.tag == "Enemy")
+        if(collision.gameObject.name == "HitBox")
         {
-            Debug.Log("dmg enemy");
-            var i = collision.GetComponentInParent<HealthProxy>();
+            var i = collision.GetComponent<HealthProxy>();
             i?.Damage(dmg);
             gameObject.SetActive(false);
         }
