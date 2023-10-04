@@ -61,7 +61,6 @@ public class FollowMousePosition : MonoBehaviour//, IObservable<float>
 
         var p = _referenceCamera.ScreenToWorldPoint(_mousePosition.action.ReadValue<Vector2>());
         transform.position = new Vector3(p.x, p.y, 0);
-
     }
 
     //IObserver<float> toCall;

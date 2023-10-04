@@ -8,6 +8,11 @@ interface ISet<T>
     void Set(T value);
 }
 
+interface IRemove<T>
+{
+    void Remove(T value);
+}
+
 public class Reference<T> : ScriptableObject, ISet<T>
 {
     T _instance;
@@ -21,5 +26,5 @@ public class Reference<T> : ScriptableObject, ISet<T>
         _instance = value;
         OnValueChanged?.Invoke(_instance);
     }
-
 }
+
