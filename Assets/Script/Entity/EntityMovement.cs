@@ -1,6 +1,9 @@
+using DG.Tweening;
+using Game;
 using NaughtyAttributes;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -21,8 +24,15 @@ public class EntityMovement : MonoBehaviour
 
     Vector2 MoveDirection { get; set; }
     Vector2 OldVelocity { get; set; }
+    Vector2 OldMoveDirection { get; set; }
+    Vector2 OriginPoint { get; set; }
 
     public Alterable<float> CurrentSpeed { get; private set; }
+
+    [SerializeField] float delay = 1f;
+    float duration;
+    bool canUndo, isRewinding;
+    List<CommandMovement> listCmdMove;
 
     #region EDITOR
 #if UNITY_EDITOR
@@ -38,7 +48,10 @@ public class EntityMovement : MonoBehaviour
     {
 
         CurrentSpeed = new Alterable<float>(_startSpeed);
-
+        listCmdMove = new List<CommandMovement>();
+        OriginPoint = transform.position;
+        duration = 0f;
+        canUndo = true;
     }
 
     private void FixedUpdate()
@@ -55,9 +68,58 @@ public class EntityMovement : MonoBehaviour
 
         // Keep old data
         OldVelocity = _rb.velocity;
+        OldMoveDirection = MoveDirection;
     }
 
-    public void Move(Vector2 direction) => MoveDirection = direction.normalized;
+    public void Move(Vector2 direction)
+    {
+        MoveDirection = direction.normalized;
+
+        if (MoveDirection != OldMoveDirection || duration > delay)
+        {
+            listCmdMove.Add(new CommandMovement(_rb.gameObject, transform.position, OriginPoint, duration));
+            duration = 0f;
+            OriginPoint = transform.position;
+        }
+        else
+        {
+            duration += Time.deltaTime;
+        }
+    }
+
+    public void Reverse(bool isReversing)
+    {
+        isRewinding = isReversing;
+        if (isReversing)
+            StartCoroutine(ReverseCorout());
+    }
+    
+    IEnumerator ReverseCorout()
+    {
+        yield return new WaitForSeconds(0f);
+        if (canUndo)
+        {
+            if(listCmdMove != null && listCmdMove.Count > 0)
+            {
+                canUndo = false;
+                ICommand cmd = listCmdMove[listCmdMove.Count-1];
+                listCmdMove.RemoveAt(listCmdMove.Count-1);
+                cmd.Undo().OnComplete(() => canUndo = true);
+            }
+        }
+        else if (isRewinding)
+        {
+            StartCoroutine(ReverseCorout());
+        }
+    }
+    public void StopReverse()
+    {
+        if (listCmdMove != null && listCmdMove.Count > 0)
+        {
+            listCmdMove.Add(listCmdMove.Last().Stop());
+        }
+    }
+
     public void MoveToward(Transform target) => MoveDirection = (target.position - _rb.transform.position).normalized;
 
     public void AlterSpeed(float factor)
@@ -68,5 +130,6 @@ public class EntityMovement : MonoBehaviour
     {
 
     }
+
 
 }
