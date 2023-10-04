@@ -8,6 +8,8 @@ namespace Game
         [SerializeField] Entity _e;
         [SerializeField] EnemiesReference _ref;
 
+        [SerializeField] private Health health;
+
         ISet<Entity> RealRefSet => _ref;
         IRemove<Entity> RealRefRemove => _ref;
 
@@ -26,6 +28,7 @@ namespace Game
         {
             Debug.Log("Activate");
             SetRef();
+            health.Revive(health.MaxHealth);
             gameObject.SetActive(true);
         }
 
