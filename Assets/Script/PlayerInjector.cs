@@ -6,7 +6,7 @@ public class PlayerInjector : MonoBehaviour
     [SerializeField] Entity _e;
     [SerializeField] PlayerReference _ref;
 
-    ISet<Entity> RealRef => _ref;
+        ISet<Entity> RealRef => _ref;
 
     public IReadOnlyList<int> T { get => t; }
 

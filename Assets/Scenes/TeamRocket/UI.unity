@@ -242,7 +242,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1326404454}
   m_Direction: 0
   m_Value: 0
-  m_Size: 0
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -478,8 +478,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerRef: {fileID: 11400000, guid: a17ad5991bc00fc41991e8b0cba566bf, type: 2}
+  spawnerRef: {fileID: 0}
   scrollbarHealh: {fileID: 924266597}
   scrollbarPower: {fileID: 0}
+  textUI: {fileID: 0}
 --- !u!1 &1326404453
 GameObject:
   m_ObjectHideFlags: 0

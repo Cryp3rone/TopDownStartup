@@ -28,6 +28,11 @@ namespace Game
         [SerializeField] private float spawnMaxInterval;
         [SerializeField] private float minDistanceFromPlayer;
         [SerializeField] private GameObject spawnParent;
+        [SerializeField] SpawnerReference spawnerReference;
+        
+        ISet<SpawnerManager> RealRef => spawnerReference;
+        public event Action<int> OnValueChangedWaveIndex;
+        public event Action OnWin;
         
         // Spawning range of X
         [Header ("X Spawn Range")]
@@ -47,6 +52,7 @@ namespace Game
         private void Awake()
         {
             enemiesReference.Init();
+            RealRef.Set(this);
             enemiesReference.OnValueChanged += CheckIfWaveIsFinished;
             _meleePool = new EnemyPool(meleePrefab);
             _distancePool = new EnemyPool(distancePrefab);
@@ -62,6 +68,7 @@ namespace Game
             
             _currentWave = spawnerData.waves[_waveIndex];
             _spawnedEnemies = 0;
+            OnValueChangedWaveIndex?.Invoke(_waveIndex);
             SpawnWave();
         }
         
@@ -119,6 +126,7 @@ namespace Game
             }
             else
             {
+                OnValueChangedWaveIndex?.Invoke(_waveIndex);
                 _currentWave = spawnerData.waves[_waveIndex];
                 _spawnedEnemies = 0;
                 TransitionToNextWave();
@@ -140,6 +148,7 @@ namespace Game
         void Win()
         {
             Debug.Log("Win");
+            OnWin?.Invoke();
         }
 
         bool isPosOnPlayer(Vector2 pos)
