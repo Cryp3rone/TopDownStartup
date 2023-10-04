@@ -26,12 +26,15 @@ public class Health : MonoBehaviour, IHealth
     public event Action<int> OnRegen;
     public event Action<GameObject, EntityType> OnDie;
 
+    public event Action<int> OnValueChangedCurrentHealth;
+
     public void Damage(int amount)
     {
         Assert.IsTrue(amount >= 0);
         if (IsDead) return;
 
         CurrentHealth = Mathf.Max(0, CurrentHealth - amount);
+        OnValueChangedCurrentHealth?.Invoke(CurrentHealth);
         OnDamage?.Invoke(amount);
     }
     public void Regen(int amount)
@@ -59,6 +62,7 @@ public class Health : MonoBehaviour, IHealth
 
         var old = CurrentHealth;
         CurrentHealth = Mathf.Min(_maxHealth, CurrentHealth + amount);
+        OnValueChangedCurrentHealth?.Invoke(CurrentHealth);
         OnRegen?.Invoke(CurrentHealth-old);
     }
     void InternalDie()
