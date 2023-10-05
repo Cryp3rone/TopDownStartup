@@ -6,7 +6,8 @@
         "RedStudio.SerializableCallback",
         "NaughtyAttributes.Core",
         "Cinemachine",
-        "UnityEngine.Advertisements"
+        "UnityEngine.Advertisements",
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

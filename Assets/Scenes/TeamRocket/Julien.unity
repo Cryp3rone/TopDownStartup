@@ -425,7 +425,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 429428784706473366, guid: 2df86fa74086f61438657ca74d61d5da, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 429428784706473366, guid: 2df86fa74086f61438657ca74d61d5da, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 820648960426048331, guid: 2df86fa74086f61438657ca74d61d5da, type: 3}
       propertyPath: m_IsActive
@@ -493,7 +497,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3320513878872417539, guid: 2df86fa74086f61438657ca74d61d5da, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6445811766320157846, guid: 2df86fa74086f61438657ca74d61d5da, type: 3}
       propertyPath: _startSpeed
@@ -531,6 +535,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 8773001925376712554, guid: 2df86fa74086f61438657ca74d61d5da, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 8795737962010012286, guid: 2df86fa74086f61438657ca74d61d5da, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
@@ -545,7 +553,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8795737962010012286, guid: 2df86fa74086f61438657ca74d61d5da, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.79
+      value: 4.35
       objectReference: {fileID: 0}
     - target: {fileID: 8795737962010012286, guid: 2df86fa74086f61438657ca74d61d5da, type: 3}
       propertyPath: m_LocalPosition.y
@@ -673,7 +681,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 10.65625
+  orthographic size: 1
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -61111,7 +61119,7 @@ MonoBehaviour:
   spawnMinInterval: 1.5
   spawnMaxInterval: 2
   minDistanceFromPlayer: 2
-  spawnParent: {fileID: 1725448203}
+  spawnerReference: {fileID: 11400000, guid: 7e6a4a631ce14e54fb59ce8597bb6f67, type: 2}
   xMin: 20
   xMax: 44
   yMin: 37

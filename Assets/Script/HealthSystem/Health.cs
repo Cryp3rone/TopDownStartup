@@ -28,8 +28,15 @@ public class Health : MonoBehaviour, IHealth
 
     public event Action<int> OnValueChangedCurrentHealth;
 
-    public void Damage(int amount)
+    public void Damage(GameObject source,int amount)
     {
+        Debug.Log("source tag :" + source.tag + " tag :" + gameObject.tag);
+        Debug.Log("source gameobject :" + source.name + " name :" + gameObject.name);
+        if (source.tag == gameObject.tag) {
+            Debug.Log("Hit ally");
+            return; 
+        }
+
         Assert.IsTrue(amount >= 0);
 
         CurrentHealth = Mathf.Max(0, CurrentHealth - amount);

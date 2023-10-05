@@ -27,7 +27,6 @@ namespace Game
         [SerializeField] private float spawnMinInterval;
         [SerializeField] private float spawnMaxInterval;
         [SerializeField] private float minDistanceFromPlayer;
-        [SerializeField] private GameObject spawnParent;
         [SerializeField] SpawnerReference spawnerReference;
         
         ISet<SpawnerManager> RealRef => spawnerReference;
@@ -126,7 +125,6 @@ namespace Game
             }
             else
             {
-                OnValueChangedWaveIndex?.Invoke(_waveIndex);
                 _currentWave = spawnerData.waves[_waveIndex];
                 _spawnedEnemies = 0;
                 TransitionToNextWave();
@@ -141,6 +139,7 @@ namespace Game
             {
                 //Transition Effect
                 yield return new WaitForSeconds(timeBtwWaves);
+                OnValueChangedWaveIndex?.Invoke(_waveIndex);
                 SpawnWave();
             }
         }

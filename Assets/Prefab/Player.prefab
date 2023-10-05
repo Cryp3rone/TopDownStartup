@@ -58,7 +58,7 @@ MonoBehaviour:
   - {x: 0.2958265, y: -0.2958265, z: 0}
   m_ShapePathHash: 1522865524
   m_Mesh: {fileID: 0}
-  m_InstanceId: -1255148
+  m_InstanceId: 68726
   m_LocalBounds:
     m_Center: {x: -0.011600763, y: -0.10208678, z: 0}
     m_Extent: {x: 0.30742726, y: 0.19373971, z: 0}
@@ -398,6 +398,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Shotgun
       objectReference: {fileID: 0}
+    - target: {fileID: 5432648053913509044, guid: fb3314617e760674dbed5578c697ef73, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -530,6 +534,38 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2349297346374642035}
     m_Modifications:
+    - target: {fileID: 2558796177086854746, guid: 3ff7291d910442c4fa3ed36bb44b1248, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2558796177086854746, guid: 3ff7291d910442c4fa3ed36bb44b1248, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2558796177086854746, guid: 3ff7291d910442c4fa3ed36bb44b1248, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2558796177086854746, guid: 3ff7291d910442c4fa3ed36bb44b1248, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 3.54
+      objectReference: {fileID: 0}
+    - target: {fileID: 2558796177086854746, guid: 3ff7291d910442c4fa3ed36bb44b1248, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.52
+      objectReference: {fileID: 0}
+    - target: {fileID: 2558796177086854746, guid: 3ff7291d910442c4fa3ed36bb44b1248, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2558796177086854746, guid: 3ff7291d910442c4fa3ed36bb44b1248, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2558796177086854746, guid: 3ff7291d910442c4fa3ed36bb44b1248, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6658490374360928690, guid: 3ff7291d910442c4fa3ed36bb44b1248, type: 3}
       propertyPath: m_Name
       value: Pistol

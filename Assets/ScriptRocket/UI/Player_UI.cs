@@ -23,6 +23,8 @@ namespace Game
             _playerHealth = playerRef.Instance.GetComponent<Health>();
             _playerHealth.OnValueChangedCurrentHealth += UpdateHealthUI;
             _spawnerManager = spawnerRef.Instance;
+            _spawnerManager.OnValueChangedWaveIndex += UpdateWaveText;
+            _spawnerManager.OnWin += UpdateWinText;
         }
 
         void UpdateHealthUI(int value)
@@ -37,14 +39,14 @@ namespace Game
             
         }
 
-        void UpdateWaveText()
+        void UpdateWaveText(int index)
         {
-            
+            textUI.text = "Wave " + (++index).ToString();
         }
 
         void UpdateWinText()
         {
-            
+            textUI.text = "Win";
         }
     }
 }
