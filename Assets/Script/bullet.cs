@@ -1,3 +1,4 @@
+using Game;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Loading;
@@ -34,6 +35,11 @@ public class bullet : MonoBehaviour
         StartCoroutine(wait());
     }
 
+    private void OnBecameInvisible()
+    {
+        PlayerMunition.SharedInstance.AddBulletBackToInactive(this);
+    }
+
     public void SetDirectionAndDmg(Vector3 direction, int dmg)
     {
         this.direction = direction.normalized;
@@ -44,6 +50,7 @@ public class bullet : MonoBehaviour
     {
         yield return new WaitForSeconds(2);
 
-        this.gameObject.SetActive(false);
+        if(isActiveAndEnabled) 
+            this.gameObject.SetActive(false);
     }
 }
