@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class MultipleReference<T> : ScriptableObject, ISet<T>, IRemove<T>
 {
-    private List<T> _instances;
+    private List<T> _instances = new List<T>();
 
     public List<T> Instances { get => _instances;}
 

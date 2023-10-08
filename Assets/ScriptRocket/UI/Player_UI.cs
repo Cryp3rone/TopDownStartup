@@ -25,6 +25,7 @@ namespace Game
             _spawnerManager = spawnerRef.Instance;
             _spawnerManager.OnValueChangedWaveIndex += UpdateWaveText;
             _spawnerManager.OnWin += UpdateWinText;
+            _spawnerManager.PlayerDied += UpdateLooseText;
         }
 
         void UpdateHealthUI(int value)
@@ -48,5 +49,10 @@ namespace Game
         {
             textUI.text = "Win";
         }
+        void UpdateLooseText()
+        {
+            textUI.text = "Loose";
+        }
+        
     }
 }

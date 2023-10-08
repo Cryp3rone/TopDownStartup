@@ -17,7 +17,7 @@ public class Health : MonoBehaviour, IHealth
         get;
         private set;
     }
-    public bool IsDead => CurrentHealth >= 0;
+    public bool IsDead => CurrentHealth <= 0;
     public int MaxHealth { get => _maxHealth; }
 
     public event Action<int> OnDamage;
@@ -25,6 +25,10 @@ public class Health : MonoBehaviour, IHealth
     public event Action<GameObject, EntityType> OnDie;
 
     public event Action<int> OnValueChangedCurrentHealth;
+    private void Start()
+    {
+        CurrentHealth = MaxHealth;
+    }
 
     public void Damage(GameObject source,int amount)
     {

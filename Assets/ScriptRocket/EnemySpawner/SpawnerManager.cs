@@ -31,6 +31,7 @@ namespace Game
         
         ISet<SpawnerManager> RealRef => spawnerReference;
         public event Action<int> OnValueChangedWaveIndex;
+        public event Action PlayerDied;
         public event Action OnWin;
         
         // Spawning range of X
@@ -48,6 +49,7 @@ namespace Game
         private Wave _currentWave;
         private int _spawnedEnemies;
         private int _killedEnemies;
+        private bool _canSpawn = true;
 
         private void Awake()
         {
@@ -57,6 +59,8 @@ namespace Game
             _meleePool = new EnemyPool(meleePrefab);
             _distancePool = new EnemyPool(distancePrefab);
             _bossPool = new EnemyPool(bossPrefab);
+
+            playerReference.Instance.gameObject.GetComponent<Health>().OnDie += EntityDie;
         }
 
         public void StartSystem()
@@ -73,6 +77,7 @@ namespace Game
         
         private void SpawnWave()
         {
+            if (_spawnedEnemies == 0) { OnValueChangedWaveIndex?.Invoke(_waveIndex); }
             if (_waitingForAllEnemiesToBeDead) { return; }
             
             Vector2 pos;
@@ -115,6 +120,8 @@ namespace Game
 
         void SetupNextWave()
         {
+            if (!_canSpawn) { return;}
+            
             Debug.Log("SetupNextWave");
             _waitingForAllEnemiesToBeDead = false;
             _waveIndex++;
@@ -135,16 +142,11 @@ namespace Game
         void TransitionToNextWave()
         {
             Debug.Log("transition to next wave");
-            Debug.Log(timeBtwWaves );
+
             StartCoroutine(Transition(timeBtwWaves));
-            
             IEnumerator Transition(float time)
             {
-                //Transition Effect
-                Debug.Log("Enter");
                 yield return new WaitForSeconds(time);
-                Debug.Log("Waited");
-                OnValueChangedWaveIndex?.Invoke(_waveIndex);
                 SpawnWave();
             }
         }
@@ -161,7 +163,7 @@ namespace Game
             return Vector2.Distance(pos, playerPos) < minDistanceFromPlayer;
         }
         
-        void EnemyDie(GameObject go, EntityType type)
+        void EntityDie(GameObject go, EntityType type)
         {
             switch (type)
             {
@@ -174,9 +176,13 @@ namespace Game
                 case EntityType.EnemyBoss:
                     _bossPool.Pool.Release(go);
                     break;
+                case EntityType.Player:
+                    PlayerDied?.Invoke();
+                    _canSpawn = false;
+                    break;
             }
             
-            go.GetComponent<Health>().OnDie -= EnemyDie;
+            go.GetComponent<Health>().OnDie -= EntityDie;
         }
 
         EntityType ChooseEnemyWithWeight()
@@ -229,7 +235,7 @@ namespace Game
             go.transform.position = pos;
             Health health = go.GetComponent<Health>();
             health.SetEntityType(type);
-            health.OnDie += EnemyDie;
+            health.OnDie += EntityDie;
         }
     }
 }
