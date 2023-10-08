@@ -14,7 +14,7 @@ public class EntityAttack : MonoBehaviour
         OnAttack?.Invoke();
         foreach (var el in _attackZone.InZone)
         {
-            el.Damage(10);
+              el.Damage(this.gameObject, 10);         
         }
     }
 

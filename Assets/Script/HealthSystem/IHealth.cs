@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface IHealth 
 {
-    void Damage(int amount);
+    void Damage(GameObject source, int amount);
     void Regen(int amount);
     void Kill();
 

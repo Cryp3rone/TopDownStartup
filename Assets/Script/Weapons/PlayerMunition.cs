@@ -9,12 +9,14 @@ namespace Game
     {
         public static PlayerMunition SharedInstance;
 
-        [SerializeField] private List<bullet> pooledObjects;
+        [SerializeField] private List<bullet> pooledInactiveObjects;
+        [SerializeField] private List<bullet> pooledActiveObjects;
+
         [SerializeField] private bullet objectToPool;
         [SerializeField] private int amountToPool;
 
         private Weapon playerWeapon = null;
-        private int amountShooted;
+        private int amountShooted = 0;
         private bool onReload = false;
 
         public enum WEAPON_TYPE
@@ -29,13 +31,13 @@ namespace Game
 
         void Start()
         {
-            pooledObjects = new List<bullet>();
+            pooledInactiveObjects = new List<bullet>();
             bullet tmp;
             for (int i = 0; i < amountToPool; i++)
             {
                 tmp = Instantiate(objectToPool);
                 tmp.gameObject.SetActive(false);
-                pooledObjects.Add(tmp);
+                pooledInactiveObjects.Add(tmp);
             }
         }
 
@@ -57,14 +59,25 @@ namespace Game
             }
         }
 
+        public void AddBulletBackToInactive(bullet bullet)
+        {
+            pooledInactiveObjects.Add(bullet);
+            pooledActiveObjects.Remove(bullet);
+        }
+
         private bullet GetPooledObject(int magazine)
         {
+            bullet bulletToReturn;
+
             for(int i = 0; i < magazine; i++)
             {
-                if (!pooledObjects[i].gameObject.activeInHierarchy)
+                if (pooledInactiveObjects[i] != null)
                 {
+                    bulletToReturn = pooledInactiveObjects[i];
                     amountShooted += 1;
-                    return pooledObjects[i];
+                    pooledActiveObjects.Add(pooledInactiveObjects[i]);
+                    pooledInactiveObjects.Remove(pooledInactiveObjects[i]);
+                    return bulletToReturn;
                 }
             }
             return null;
@@ -73,17 +86,17 @@ namespace Game
         private List<bullet> GetMultiplePooledObject(int magazine, int nbToAdd)
         {
             List<bullet> bullets = new List<bullet>();
-            for(int j = 0; j < magazine; j++)
-            {
+            
                 for (int i = 0; i < nbToAdd; i++)
                 {
-                    if (!pooledObjects[i].gameObject.activeInHierarchy)
-                        bullets.Add(pooledObjects[i]);
+                    if (pooledInactiveObjects[i] != null)
+                    {
+                        bullets.Add(pooledInactiveObjects[i]);
+                        pooledActiveObjects.Add(pooledInactiveObjects[i]);
+                        pooledInactiveObjects.Remove(pooledInactiveObjects[i]);
+                    }
                 }
                 return bullets;
-            }
-
-            return null;
         }
 
         private void PistolShoot(object sender, Weapon.OnShootEvent e)
@@ -91,6 +104,7 @@ namespace Game
             if (onReload)
                 return;
 
+            Debug.Log(amountShooted + "  " + e.magazine);
             bullet bullet = GetPooledObject(e.magazine);
 
             if (bullet != null)
@@ -100,6 +114,7 @@ namespace Game
                 bullet.transform.position = e.spawnPoint.transform.position;
                 // Set rotation
                 bullet.gameObject.SetActive(true);
+
 
                 if(amountShooted == e.magazine)
                     StartCoroutine(Reload(1));
