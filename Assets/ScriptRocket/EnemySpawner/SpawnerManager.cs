@@ -47,10 +47,11 @@ namespace Game
         private byte _waveIndex = 0;
         private Wave _currentWave;
         private int _spawnedEnemies;
+        private int _killedEnemies;
 
         private void Awake()
         {
-            enemiesReference.Init();
+            enemiesReference.Clear();
             RealRef.Set(this);
             enemiesReference.OnValueChanged += CheckIfWaveIsFinished;
             _meleePool = new EnemyPool(meleePrefab);
@@ -66,19 +67,13 @@ namespace Game
             }
             
             _currentWave = spawnerData.waves[_waveIndex];
-            _spawnedEnemies = 0;
             OnValueChangedWaveIndex?.Invoke(_waveIndex);
             SpawnWave();
         }
         
         private void SpawnWave()
         {
-            if(_spawnedEnemies == _currentWave.enemyCount) 
-            { 
-                _waitingForAllEnemiesToBeDead = true;
-                Debug.Log("_waitingForAllEnemiesToBeDead");
-                return;
-            }
+            if (_waitingForAllEnemiesToBeDead) { return; }
             
             Vector2 pos;
             pos = new Vector2 (Random.Range (xMin, xMax), Random.Range (yMin, yMax));
@@ -94,6 +89,12 @@ namespace Game
             
             _spawnedEnemies++;
             
+            if(_spawnedEnemies == _currentWave.enemyCount) 
+            { 
+                _waitingForAllEnemiesToBeDead = true;
+                Debug.Log("_waitingForAllEnemiesToBeDead");
+            }
+            
             float randomTime = Random.Range(spawnMinInterval, spawnMaxInterval);
             StartCoroutine(WaitRandomTime(randomTime));
 
@@ -104,10 +105,9 @@ namespace Game
             }
         }
 
-        void CheckIfWaveIsFinished(int enemyAlive)
+        void CheckIfWaveIsFinished()
         {
-            Debug.Log("Enemy Alive :" + enemyAlive);
-            if (enemyAlive == 0 && _waitingForAllEnemiesToBeDead)
+            if (++_killedEnemies == _spawnedEnemies && _waitingForAllEnemiesToBeDead)
             {
                 SetupNextWave();
             }
@@ -127,18 +127,23 @@ namespace Game
             {
                 _currentWave = spawnerData.waves[_waveIndex];
                 _spawnedEnemies = 0;
+                _killedEnemies = 0;
                 TransitionToNextWave();
             }
         }
 
         void TransitionToNextWave()
         {
-            StartCoroutine(Transition());
+            Debug.Log("transition to next wave");
+            Debug.Log(timeBtwWaves );
+            StartCoroutine(Transition(timeBtwWaves));
             
-            IEnumerator Transition()
+            IEnumerator Transition(float time)
             {
                 //Transition Effect
-                yield return new WaitForSeconds(timeBtwWaves);
+                Debug.Log("Enter");
+                yield return new WaitForSeconds(time);
+                Debug.Log("Waited");
                 OnValueChangedWaveIndex?.Invoke(_waveIndex);
                 SpawnWave();
             }
@@ -170,6 +175,8 @@ namespace Game
                     _bossPool.Pool.Release(go);
                     break;
             }
+            
+            go.GetComponent<Health>().OnDie -= EnemyDie;
         }
 
         EntityType ChooseEnemyWithWeight()

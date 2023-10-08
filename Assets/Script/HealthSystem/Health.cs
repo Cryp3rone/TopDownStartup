@@ -9,11 +9,9 @@ using UnityEngine.Assertions;
 public class Health : MonoBehaviour, IHealth
 {
     [SerializeField] int _maxHealth;
+
     private EntityType _entityType;
 
-    /// <summary>
-    /// coucou
-    /// </summary>
     public int CurrentHealth 
     {
         get;
@@ -30,10 +28,7 @@ public class Health : MonoBehaviour, IHealth
 
     public void Damage(GameObject source,int amount)
     {
-        Debug.Log("source tag :" + source.tag + " tag :" + gameObject.tag);
-        Debug.Log("source gameobject :" + source.name + " name :" + gameObject.name);
-        if (source.tag == gameObject.tag) {
-            Debug.Log("Hit ally");
+        if (source.CompareTag(gameObject.tag)) {
             return; 
         }
 

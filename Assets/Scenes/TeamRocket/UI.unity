@@ -480,7 +480,7 @@ MonoBehaviour:
   playerRef: {fileID: 11400000, guid: a17ad5991bc00fc41991e8b0cba566bf, type: 2}
   spawnerRef: {fileID: 11400000, guid: 7e6a4a631ce14e54fb59ce8597bb6f67, type: 2}
   scrollbarHealh: {fileID: 924266597}
-  scrollbarPower: {fileID: 0}
+  scrollbarPower: {fileID: 1469594228}
   textUI: {fileID: 1876304951}
 --- !u!1 &1326404453
 GameObject:

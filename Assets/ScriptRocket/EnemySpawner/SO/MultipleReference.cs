@@ -9,23 +9,22 @@ public class MultipleReference<T> : ScriptableObject, ISet<T>, IRemove<T>
 
     public List<T> Instances { get => _instances;}
 
-    public event Action<int> OnValueChanged;
+    public event Action OnValueChanged;
 
     void ISet<T>.Set(T value)
     {
         _instances.Add(value);
-        OnValueChanged?.Invoke(Instances.Count);
     }
 
     void IRemove<T>.Remove(T value)
     {
         _instances.Remove(value);
-        OnValueChanged?.Invoke(Instances.Count);
+        OnValueChanged?.Invoke();
     }
 
     protected void ClearList()
     {
-        _instances.Clear();
+        if (_instances != null) _instances.Clear();
     }
 }
 

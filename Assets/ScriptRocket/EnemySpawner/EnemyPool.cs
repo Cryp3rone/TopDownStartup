@@ -45,6 +45,7 @@ namespace Game
         void OnTakeFromPool(GameObject go)
         {
             //Activate object
+            go.gameObject.SetActive(true);
             go.gameObject.GetComponent<EnemyInjector>().Activate();
         }
     

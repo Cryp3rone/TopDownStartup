@@ -28,8 +28,10 @@ namespace Game
         {
             Debug.Log("Activate");
             SetRef();
+            Debug.Log(health.IsDead);
+            if (!health.IsDead) return;
+            
             health.Revive(health.MaxHealth);
-            gameObject.SetActive(true);
         }
 
         public void Deactivate()

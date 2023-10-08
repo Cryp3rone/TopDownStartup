@@ -6,7 +6,7 @@ namespace Game
     [CreateAssetMenu(menuName ="EnemiesReference")]
     public class EnemiesReference : MultipleReference<Entity>
     {
-        public void Init()
+        public void Clear()
         {
             ClearList();
         }

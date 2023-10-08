@@ -104,7 +104,7 @@ namespace Game
             if (onReload)
                 return;
 
-            Debug.Log(amountShooted + "  " + e.magazine);
+            //Debug.Log(amountShooted + "  " + e.magazine);
             bullet bullet = GetPooledObject(e.magazine);
 
             if (bullet != null)
