@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Game
 {
-    public class CommandMovement : MonoBehaviour, ICommand
+    public class CommandMovement : ICommand
     {
         private GameObject storedEntity;
         private Vector3 startPosition;

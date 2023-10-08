@@ -30,7 +30,7 @@ public class EntityMovement : MonoBehaviour
     public Alterable<float> CurrentSpeed { get; private set; }
 
     [SerializeField] float delay = 1f;
-    float duration;
+    float duration, time;
     bool canUndo, isRewinding;
     List<CommandMovement> listCmdMove;
 
@@ -51,6 +51,7 @@ public class EntityMovement : MonoBehaviour
         listCmdMove = new List<CommandMovement>();
         OriginPoint = transform.position;
         duration = 0f;
+        time = Time.time;
         canUndo = true;
     }
 
@@ -69,21 +70,20 @@ public class EntityMovement : MonoBehaviour
         // Keep old data
         OldVelocity = _rb.velocity;
         OldMoveDirection = MoveDirection;
+
+        
     }
 
     public void Move(Vector2 direction)
     {
         MoveDirection = direction.normalized;
 
-        if (MoveDirection != OldMoveDirection || duration > delay)
+        if (MoveDirection != OldMoveDirection || duration > 1f)
         {
+            duration = Time.time - time;
             listCmdMove.Add(new CommandMovement(_rb.gameObject, transform.position, OriginPoint, duration));
-            duration = 0f;
             OriginPoint = transform.position;
-        }
-        else
-        {
-            duration += Time.deltaTime;
+            time = Time.time;
         }
     }
 
@@ -96,7 +96,7 @@ public class EntityMovement : MonoBehaviour
     
     IEnumerator ReverseCorout()
     {
-        yield return new WaitForSeconds(0f);
+        yield return new WaitForSeconds(0.1f);
         if (canUndo)
         {
             if(listCmdMove != null && listCmdMove.Count > 0)
